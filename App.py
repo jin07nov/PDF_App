@@ -15,7 +15,18 @@ from llama_index import (
 )
 from langchain import OpenAI
 
-load_dotenv()
+def openai_api_load():
+    load_dotenv()    
+    APIKEYINPUT = st.sidebar.text_input('OpenAI API Key', type='password')
+    os.environ['OPENAI_API_KEY'] = APIKEYINPUT
+    APIKEYOUTPUT = os.environ['OPENAI_API_KEY']
+    if APIKEYOUTPUT.startswith('sk-'):
+        st.warning('API key is set correctly!', icon='✅')
+        return True
+    else:
+        st.warning('Please enter your OpenAI API key!', icon='⚠')
+        return False
+
 
 PDF_DATA_DIR = "./pdf_data/"
 STORAGE_DIR = "./storage/"
@@ -84,7 +95,9 @@ def display_chat(chat_history):
 
 def main():
     st.title('PDF Q&A app')
+    openai_api_load()
 
+    
     upload_pdf_file()
     file_name = st.sidebar.selectbox("Choose a file", os.listdir(PDF_DATA_DIR)) 
     selected_model = st.sidebar.selectbox("Choose a model", ["gpt-3.5-turbo", "gpt-4"])
@@ -95,6 +108,8 @@ def main():
     submit_question = st.button("質問")
     clear_chat = st.sidebar.button("履歴消去")
 
+
+
     # チャット履歴を保存
     if "chat_history" not in st.session_state:
         st.session_state["chat_history"] = []
@@ -103,7 +118,10 @@ def main():
         st.session_state["chat_history"] = []
 
     pdf_reader = PDFReader()
+    
+    
     response_generator = QAResponseGenerator(selected_model, pdf_reader)
+
     # ボタンがクリックされた場合の処理
     if submit_question:
         if question:  # 質問が入力されている場合
@@ -111,7 +129,7 @@ def main():
             if choice == "表示する":
                 response += f"\n\n参照した情報は次の通りです:\n{source}"
 
-            # 質問と応答をチャット履歴に追加
+        # 質問と応答をチャット履歴に追加
             st.session_state["chat_history"].append({"user": question})
             st.session_state["chat_history"].append({"bot": response})
 
