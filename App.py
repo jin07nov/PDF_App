@@ -95,7 +95,7 @@ def display_chat(chat_history):
 
 def main():
     st.title('PDF Q&A app')
-    openai_api_load()
+    keyinput = openai_api_load() # test
 
     
     upload_pdf_file()
@@ -119,8 +119,8 @@ def main():
 
     pdf_reader = PDFReader()
     
-    
-    response_generator = QAResponseGenerator(selected_model, pdf_reader)
+    if keyinput:
+        response_generator = QAResponseGenerator(selected_model, pdf_reader)
 
     # ボタンがクリックされた場合の処理
     if submit_question:
