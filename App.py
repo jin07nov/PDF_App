@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
 import streamlit as st
 from streamlit_chat import message
 
@@ -15,8 +14,7 @@ from llama_index import (
 )
 from langchain import OpenAI
 
-def openai_api_load():
-    load_dotenv()    
+def openai_api_load(): 
     APIKEYINPUT = st.sidebar.text_input('OpenAI API Key', type='password')
     os.environ['OPENAI_API_KEY'] = APIKEYINPUT
     APIKEYOUTPUT = os.environ['OPENAI_API_KEY']
