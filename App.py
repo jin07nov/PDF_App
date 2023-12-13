@@ -1,3 +1,5 @@
+#pip install llama-index==0.8.8
+
 import os
 from pathlib import Path
 import streamlit as st
