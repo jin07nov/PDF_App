@@ -4,3 +4,4 @@ llama-index==0.8.8
 streamlit-chat==0.1.0
 nltk
 streamlit
+Path
